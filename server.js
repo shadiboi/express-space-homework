@@ -1,6 +1,8 @@
 // DEPENDENCIES
-const express = require('express');
+const express = require('express')
+const marsMissions = require('./model/marsMissions')
 const app = express();
+
 
 // run `npm install` to install dependencies in package.json
 
@@ -20,45 +22,7 @@ const app = express();
 // PORT
 const port = 3000;
 
-// DATA - put into marsMissions.js file inside of a models folder, for module.exports
-// remember to require it in the server
-const marsMissions = [
-  {
-    name: "Curiosity",
-    launchDate: "26 Nov 2011",
-    operator: "NASA",
-    missionType: "Rover",
-    img: ""
-  },
-  {
-    name: "Opportunity",
-    launchDate: "8 Jul 2003",
-    operator: "NASA",
-    missionType: "Rover",
-    img: ""
-  },
-  {
-    name: "Spirit",
-    launchDate: "10 Jun 2003",
-    operator: "NASA",
-    missionType: "Rover",
-    img: ""
-  },
-  {
-    name: "Sojourner",
-    launchDate: "4 Dec 1996",
-    operator: "NASA",
-    missionType: "Rover",
-    img: ""
-  },
-  {
-    name: "Rosetta",
-    launchDate: "2 Mar 2004",
-    operator: "ESA",
-    missionType: "Gravity Assist",
-    img: ""
-  }
-];
+
 
 // INDEX Route
 // send data to 'missions/index.ejs' view
@@ -70,10 +34,36 @@ const marsMissions = [
 // the view should display all the data for a single mission
 
 
+//show all objects
+app.get("/", (request, response)=>{
+  response.send(marsMissions)
+})
+
+
+// SHOW INDEX
+app.get('/mars-missions/:id', (req,res)=>{
+  res.render('show.ejs', {
+       'missions': marsMissions[req.params.id]
+    })
+});
+
+
+//show only name of objects
+app.get('/mars-missions', (req,res)=>{
+  res.render('index.ejs', {
+      "missions": marsMissions
+  })
+})
+
+
+
+
 
 // LISTENER
 app.listen(port, function() {
   console.log('Missions to Mars running on port: ', port);
 })
 
-module.exports = app;
+
+
+
